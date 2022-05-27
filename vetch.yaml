@@ -1,3 +1,11 @@
+database:
+  type: ""
+  name: "newdb"
+  username: "admin"
+  password: "YOURPASSWORD"
+  server: "couchserver"
+  port: "5984"
+  
 msport: 21767
 jwt_key: "secret_key"
 secure_via_jwt: false

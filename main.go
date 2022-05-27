@@ -2,15 +2,19 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strconv"
 
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
+
+var requestLogger = logrus.New().WithFields(logrus.Fields{
+	"appName": "vetch",
+})
 
 func defaultGOPATH() string {
 	env := "HOME"
@@ -38,15 +42,15 @@ func init() {
 	filename := "./vetch.yaml"
 	source, err := ioutil.ReadFile(filename)
 	if err != nil {
-		panic(err)
+		requestLogger.Fatal(err)
 	}
 
 	err = yaml.Unmarshal(source, &Config_)
 	if err != nil {
-		panic(err)
+		requestLogger.Fatal(err)
 	}
 
-	log.Printf("==>> Config unmarshaled properly")
+	requestLogger.Infoln("==>> Config unmarshaled properly")
 }
 
 func main() {
@@ -57,6 +61,6 @@ func main() {
 
 	router := NewRouter()
 
-	log.Printf("==>> Micro service started. Listening on port %v", strconv.Itoa(Config_.MSPort))
-	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(Config_.MSPort), router))
+	requestLogger.Infoln("==>> Micro service started. Listening on port ", strconv.Itoa(Config_.MSPort))
+	requestLogger.Fatal(http.ListenAndServe(":"+strconv.Itoa(Config_.MSPort), router))
 }
