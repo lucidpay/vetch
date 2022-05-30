@@ -4,9 +4,9 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"Test",
-		"GET",
-		"/vetch/v1/test",
-		Test,
+		"Health",
+		"POST",
+		"/vetch/v1/health",
+		Health,
 	},
 }
